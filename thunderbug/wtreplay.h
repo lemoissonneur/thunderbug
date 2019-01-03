@@ -116,7 +116,7 @@ const QString WTObjectif_str[2] = {"CAPTURE", "BATTLE"};
 const QString WTGameMode_str[5] = {"PLANE_ONLY", "PLANE_TANK_MIXED", "PLANE_BOAT_MIXED", "EVENTS", "OTHER"};
 const QString WTDifficulty_str[3] = {"ARCADE", "REALISTIC", "SIMULATOR"};
 
-const int WTMapCount = 106;
+const int WTMapCount = 107;
 const QString WTMapList[WTMapCount] = {	// list of all the game maps name + "unknown" case at index [0]
     "unknown",
     "air_afghan.bin",
@@ -179,7 +179,7 @@ const QString WTMapList[WTMapCount] = {	// list of all the game maps name + "unk
     "avn_blacksea_port.bin",
     "avn_england_shore.bin",
     "avn_fiji.bin",
-	
+	"avn_fuego_islands.bin",
     "avn_ice_field.bin",
     "avn_ice_land.bin",
     "avn_ice_port.bin",
