@@ -7,62 +7,56 @@
 #include <QTime>
 #include <QAbstractListModel>
 
+/**
+ * @brief The WTreplay class
+ */
 class WTreplay
 {
 public:
-	/* WTreplay()
-		desc:	create empty replay
-		in	:	-
-		out	:	-
-	*/
+    /**
+     * @brief create empty replay
+     */
     WTreplay();
 	
-	/* WTreplay(QString filepath)
-		desc:	create replay and extract info from the given file ( bool Analyse() is called )
-		in	:	QString filepath	:	path of the file
-		out	:	-
-	*/
+    /**
+     * @brief create replay and extract info from the given file ( bool Analyse() is called )
+     * @param filepath path of the replay file
+     */
     WTreplay(QString filepath);
 	
-	/* ~WTreplay()
-		desc:	destroy replay
-		in	:	-
-		out	:	-
-	*/
+    /**
+     * @brief destroy replay
+     */
     ~WTreplay();
 
-	/*	bool Analyse()
-		desc:	extract map name, game mode, difficulty, etc ...  from the file
-		in	:	-
-		out	:	false if failed to open the file or file is not set
-	*/
+    /**
+     * @brief extract map name, game mode, difficulty, etc ...  from the file
+     * @return false if failed to open the file or file is not set
+     */
     bool Analyse();
 	
-	/*	QString description()
-		desc:	return a summary of the replay info we extracted from the file
-		in	:	-
-		out	:	QString		: empty if file is not set or Analyse() failed
-	*/
+    /**
+     * @brief return a summary of the replay info we extracted from the file
+     * @return QString		: empty if file is not set or Analyse() failed
+     */
     QString description();
 
-	//
-	QString Name;		// replay name (file name + extra info)
-    QFile* File;		// replay file
+    QString Name;		/**< replay name (file name + extra info) */
+    QFile* File;		/**< replay file */
     
-    QDateTime start;	// start time of the game (file creation time)
-    QDateTime finish;	// finish time of the game (file last edit time)
+    QDateTime start;	/**< start time of the game (file creation time)*/
+    QDateTime finish;	/**< finish time of the game (file last edit time)*/
 
-    uint Mapid;			// index in the WTMapList array
+    uint Mapid;			/**< index in the WTMapList array*/
 
-    QString ServerReplayLink;	//
+    QString ServerReplayLink;  /**< url to the server side replay*/
 	
 private:
 
-	/*	bool findmap()
-		desc:	extract map name from the replay file
-		in	:	-
-		out	:	bool : false if map not found
-	*/
+    /**
+     * @brief findmap read the replay File and try to find the map
+     * @return bool : true if map is found (1 <= Mapid <= WTMapCount), false if not (Mapid = 0)
+     */
 	bool findmap();
 
 };
@@ -75,49 +69,97 @@ private:
 
 
 
-
+/**
+ * @brief The WTreplaylistModel class
+ */
 class WTreplaylistModel :public QAbstractListModel
 {
 
 public:
     WTreplaylistModel(QObject *parent = nullptr);
 
+    /**
+     * @brief return the number of replay in the list
+     * @param parent
+     * @return number of replay in the list
+     */
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+
+    /**
+     * @brief
+     * @param index of the replay
+     * @param role
+     * @return description of the requested replay (QString)
+     */
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    /**
+     * @brief
+     * @param index of the replay
+     * @return pointer to the requested replay
+     */
     WTreplay* get_replay(const QModelIndex &index);
+
+    /**
+     * @brief
+     * @param index of the replay
+     * @return pointer to the requested replay
+     */
     WTreplay* get_replay(int index);
+
+    /**
+     * @brief remove replay from the list
+     * @param index of the replay
+     */
     void delete_replay(const QModelIndex &index);
+
+    /**
+     * @brief remove replay from the list
+     * @param index of the replay
+     */
     void delete_replay(int index);
-    void addreplay(QString filename);
+
+    /**
+     * @brief add replay to the list from file path
+     * @param path to the replay file
+     */
+    void addreplay(QString filepath);
+
+    /**
+     * @brief add replay to the list from replay pointer
+     * @param address of the replay
+     */
     void addreplay(WTreplay* replay);
+
+    /**
+     * @brief reset the list
+     */
 	void reset(void);
 
 private:
-    QList<WTreplay*> replaylist;
-    int replaycount = 0;
+    QList<WTreplay*> replaylist;  /**< replay list*/
+    int replaycount = 0;  /**< number of replay in the list*/
 };
 
 
 
-
-
-
-
-
-
-/*
-	
-*/
-enum WTObjectif {CAP, BATTLE};
-enum WTGameMode {PLANE_ONLY, TANK_ONLY, BOATS_ONLY, PLANE_TANK_MIXED, PLANE_BOAT_MIXED};
+enum WTObjectif {CAPTURE, BATTLE};
+enum WTGameMode {PLANE_ONLY, PLANE_TANK_MIXED, PLANE_BOAT_MIXED, EVENTS, OTHER};
 enum WTDifficulty {UNDEFINED, ARCADE, REALISTIC, SIMULATOR};
 
 const QString WTObjectif_str[2] = {"CAPTURE", "BATTLE"};
 const QString WTGameMode_str[5] = {"PLANE_ONLY", "PLANE_TANK_MIXED", "PLANE_BOAT_MIXED", "EVENTS", "OTHER"};
-const QString WTDifficulty_str[3] = {"ARCADE", "REALISTIC", "SIMULATOR"};
+const QString WTDifficulty_str[4] = {"UNDEFINED", "ARCADE", "REALISTIC", "SIMULATOR"};
 
+/**
+ * @brief WTMapCount total number of map
+ */
 const int WTMapCount = 107;
-const QString WTMapList[WTMapCount] = {	// list of all the game maps name + "unknown" case at index [0]
+
+/**
+ * @brief WTMapList list of all the game maps name + "unknown" case at index [0]
+ */
+const QString WTMapList[WTMapCount] = {
     "unknown",
     "air_afghan.bin",
     "air_ladoga.bin",

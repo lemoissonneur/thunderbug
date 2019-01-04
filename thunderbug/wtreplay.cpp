@@ -156,9 +156,9 @@ void WTreplaylistModel::delete_replay(int index)
     emit layoutChanged();
 }
 
-void WTreplaylistModel::addreplay(QString filename)
+void WTreplaylistModel::addreplay(QString filepath)
 {
-    replaylist.append(new WTreplay(filename));
+    replaylist.append(new WTreplay(filepath));
     replaycount++;
     emit layoutChanged();
 }
